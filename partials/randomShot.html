@@ -1,0 +1,9 @@
+<div>
+    <button id="request-button">Start</button>
+    <div v-if="loading == true">
+        Loading...
+    </div>
+    <div v-if="loading == false">
+        <detail-shot v-bind:shot="shot"></detail-shot>
+    </div>
+</div>
