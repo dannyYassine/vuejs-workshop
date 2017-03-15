@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 36);
+/******/ 	return __webpack_require__(__webpack_require__.s = 39);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9246,7 +9246,7 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(34)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)))
 
 /***/ }),
 /* 1 */
@@ -9269,6 +9269,219 @@ module.exports = { EventBus: EventBus };
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _localStorage = __webpack_require__(16);
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by dannyyassine on 2017-03-11.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var ShotLocalStorage = function (_LocalStorage) {
+    _inherits(ShotLocalStorage, _LocalStorage);
+
+    function ShotLocalStorage() {
+        _classCallCheck(this, ShotLocalStorage);
+
+        return _possibleConstructorReturn(this, (ShotLocalStorage.__proto__ || Object.getPrototypeOf(ShotLocalStorage)).apply(this, arguments));
+    }
+
+    _createClass(ShotLocalStorage, [{
+        key: 'get',
+        value: function get() {
+            var objectString = _get(ShotLocalStorage.prototype.__proto__ || Object.getPrototypeOf(ShotLocalStorage.prototype), 'get', this).call(this, 'shot');
+            return JSON.parse(objectString);
+        }
+    }, {
+        key: 'set',
+        value: function set(shot) {
+            var shotString = JSON.stringify(shot);
+            _get(ShotLocalStorage.prototype.__proto__ || Object.getPrototypeOf(ShotLocalStorage.prototype), 'set', this).call(this, 'shot', shotString);
+        }
+    }]);
+
+    return ShotLocalStorage;
+}(_localStorage2.default);
+
+exports.default = ShotLocalStorage;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by dannyyassine on 2017-03-13.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _httpService = __webpack_require__(5);
+
+var _dribbbleWebService = __webpack_require__(15);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GetShots = function () {
+    function GetShots(shotStorage) {
+        _classCallCheck(this, GetShots);
+
+        this.shotStorage = shotStorage;
+    }
+
+    _createClass(GetShots, [{
+        key: 'getCachedShot',
+        value: function getCachedShot() {
+            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+            var shot = this.shotStorage.get();
+            if (shot) {
+                this.getShotWithId(shot.id, callback);
+            } else {
+                this.getRandomShot(callback);
+            }
+        }
+    }, {
+        key: 'getShots',
+        value: function getShots() {
+            var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+
+            var webService = new _dribbbleWebService.DribbbleWebService();
+            webService.setShotEndpoint().setPage(page).setPerPage(100).setSort(_dribbbleWebService.DribbbleWebService.Sort.RECENT).execute(function (json) {
+                var shots = json;
+                callback(shots, null);
+            }, function (error) {
+                callback(null, error);
+            });
+        }
+    }, {
+        key: 'getShotWithId',
+        value: function getShotWithId(shotId) {
+            var _this = this;
+
+            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+
+            var webService = new _dribbbleWebService.DribbbleWebService();
+            webService.setShotEndpoint().setPathId(shotId).execute(function (json) {
+                callback(json, null);
+                _this._handleShot(json);
+            }, function (error) {
+                callback(null, error);
+            });
+        }
+    }, {
+        key: 'getRandomShot',
+        value: function getRandomShot() {
+            var _this2 = this;
+
+            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+            // let per_page = 100;
+            // var http = new HttpService();
+            // http.URL(`https://api.dribbble.com/v1/shots?access_token=9cc6c5a89983f37524e9c6d9536c033e03c778687dbb388d0f14ea7bb2595694&sort=recent&per_page=${per_page}`)
+            //     .GET()
+            var webService = new _dribbbleWebService.DribbbleWebService();
+            webService.setShotEndpoint().setPerPage(100).setSort(_dribbbleWebService.DribbbleWebService.Sort.RECENT).execute(function (json) {
+
+                var shot = json[Math.floor(Math.random() * per_page)];
+                callback(shot, null);
+                _this2._handleShot(shot);
+            }, function (error) {
+                callback(null, error);
+            });
+        }
+    }, {
+        key: '_handleShot',
+        value: function _handleShot(shot) {
+            this.shotStorage.set(shot);
+        }
+    }]);
+
+    return GetShots;
+}();
+
+exports.default = GetShots;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = __webpack_require__(0);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _detailShot = __webpack_require__(29);
+
+var _detailShot2 = _interopRequireDefault(_detailShot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by dannyyassine on 2017-03-08.
+ */
+var DetailShot = _vue2.default.component('detail-shot', {
+    data: function data() {
+        return {};
+    },
+
+    props: ['shot'],
+    template: _detailShot2.default,
+    methods: {
+        description: function description() {
+            if (this.shot) {
+                var divDetail = document.getElementById('detail');
+                if (divDetail) {
+                    divDetail.innerHTML = this.shot.description;
+                }
+            }
+        },
+        detailClicked: function detailClicked(event) {
+            this.$emit('detail-clicked', this.shot);
+        }
+    },
+    mounted: function mounted() {
+        console.log("mounted");
+    }
+});
+
+exports.default = DetailShot;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9365,216 +9578,6 @@ var HttpService = function () {
 exports.HttpService = HttpService;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _localStorage = __webpack_require__(14);
-
-var _localStorage2 = _interopRequireDefault(_localStorage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by dannyyassine on 2017-03-11.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-
-var ShotLocalStorage = function (_LocalStorage) {
-    _inherits(ShotLocalStorage, _LocalStorage);
-
-    function ShotLocalStorage() {
-        _classCallCheck(this, ShotLocalStorage);
-
-        return _possibleConstructorReturn(this, (ShotLocalStorage.__proto__ || Object.getPrototypeOf(ShotLocalStorage)).apply(this, arguments));
-    }
-
-    _createClass(ShotLocalStorage, [{
-        key: 'get',
-        value: function get() {
-            var objectString = _get(ShotLocalStorage.prototype.__proto__ || Object.getPrototypeOf(ShotLocalStorage.prototype), 'get', this).call(this, 'shot');
-            return JSON.parse(objectString);
-        }
-    }, {
-        key: 'set',
-        value: function set(shot) {
-            var shotString = JSON.stringify(shot);
-            _get(ShotLocalStorage.prototype.__proto__ || Object.getPrototypeOf(ShotLocalStorage.prototype), 'set', this).call(this, 'shot', shotString);
-        }
-    }]);
-
-    return ShotLocalStorage;
-}(_localStorage2.default);
-
-exports.default = ShotLocalStorage;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by dannyyassine on 2017-03-13.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-var _httpService = __webpack_require__(2);
-
-var _dribbbleWebService = __webpack_require__(13);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var GetShots = function () {
-    function GetShots(shotStorage) {
-        _classCallCheck(this, GetShots);
-
-        this.shotStorage = shotStorage;
-    }
-
-    _createClass(GetShots, [{
-        key: 'getCachedShot',
-        value: function getCachedShot() {
-            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-            var shot = this.shotStorage.get();
-            if (shot) {
-                this.getShotWithId(shot.id, callback);
-            } else {
-                this.getRandomShot(callback);
-            }
-        }
-    }, {
-        key: 'getShots',
-        value: function getShots() {
-            var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
-
-            var webService = new _dribbbleWebService.DribbbleWebService();
-            webService.setShotEndpoint().setPage(page).setPerPage(100).setSort(_dribbbleWebService.DribbbleWebService.Sort.RECENT).execute(function (json) {
-                var shots = json;
-                callback(shots, null);
-            }, function (error) {
-                callback(null, error);
-            });
-        }
-    }, {
-        key: 'getShotWithId',
-        value: function getShotWithId(shotId) {
-            var _this = this;
-
-            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
-
-
-            var webService = new _dribbbleWebService.DribbbleWebService();
-            webService.setShotEndpoint().setPathId(shotId).execute(function (json) {
-                callback(json, null);
-                _this._handleShot(json);
-            }, function (error) {
-                callback(null, error);
-            });
-        }
-    }, {
-        key: 'getRandomShot',
-        value: function getRandomShot() {
-            var _this2 = this;
-
-            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-            var per_page = 100;
-            var http = new _httpService.HttpService();
-            http.URL('https://api.dribbble.com/v1/shots?access_token=9cc6c5a89983f37524e9c6d9536c033e03c778687dbb388d0f14ea7bb2595694&sort=recent&per_page=' + per_page).GET().execute(function (json) {
-
-                var shot = json[Math.floor(Math.random() * per_page)];
-                callback(shot, null);
-                _this2._handleShot(shot);
-            }, function (error) {
-                callback(null, error);
-            });
-        }
-    }, {
-        key: '_handleShot',
-        value: function _handleShot(shot) {
-            this.shotStorage.set(shot);
-        }
-    }]);
-
-    return GetShots;
-}();
-
-exports.default = GetShots;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _vue = __webpack_require__(0);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _detailShot = __webpack_require__(27);
-
-var _detailShot2 = _interopRequireDefault(_detailShot);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Created by dannyyassine on 2017-03-08.
- */
-var DetailShot = _vue2.default.component('detail-shot', {
-    data: function data() {
-        return {};
-    },
-
-    props: ['shot'],
-    template: _detailShot2.default,
-    methods: {
-        description: function description() {
-            if (this.shot) {
-                var divDetail = document.getElementById('detail');
-                if (divDetail) {
-                    divDetail.innerHTML = this.shot.description;
-                }
-            }
-        },
-        detailClicked: function detailClicked(event) {
-            this.$emit('detail-clicked', this.shot);
-        }
-    },
-    mounted: function mounted() {
-        console.log("mounted");
-    }
-});
-
-exports.default = DetailShot;
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9590,17 +9593,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Created by dannyyassine on 2017-03-08.
+ * Created by dannyyassine on 2017-03-14.
  */
 
-var Presenter = function () {
-    function Presenter() {
-        _classCallCheck(this, Presenter);
+var Controller = function () {
+    function Controller() {
+        _classCallCheck(this, Controller);
 
         this.vm = null;
     }
 
-    _createClass(Presenter, [{
+    _createClass(Controller, [{
         key: "bind",
         value: function bind(vm) {
             this.vm = vm;
@@ -9613,13 +9616,96 @@ var Presenter = function () {
         value: function onUnLoad() {}
     }]);
 
-    return Presenter;
+    return Controller;
 }();
 
-exports.default = Presenter;
+exports.default = Controller;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _base = __webpack_require__(6);
+
+var _base2 = _interopRequireDefault(_base);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by dannyyassine on 2017-03-14.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+var RandomShotController = function (_Controller) {
+    _inherits(RandomShotController, _Controller);
+
+    /**
+     * @property {LocalStorage} shotStorage
+     */
+    function RandomShotController(getShotsInteractor) {
+        _classCallCheck(this, RandomShotController);
+
+        var _this = _possibleConstructorReturn(this, (RandomShotController.__proto__ || Object.getPrototypeOf(RandomShotController)).call(this));
+
+        _this.counter = 0;
+        _this.vm = null;
+        _this.getShotsInteractor = getShotsInteractor;
+        return _this;
+    }
+
+    _createClass(RandomShotController, [{
+        key: 'onLoad',
+        value: function onLoad() {
+            var _this2 = this;
+
+            _get(RandomShotController.prototype.__proto__ || Object.getPrototypeOf(RandomShotController.prototype), 'onLoad', this).call(this);
+            this.getShotsInteractor.getCachedShot(function (shot, error) {
+                _this2._handleShot(shot, error);
+            });
+        }
+    }, {
+        key: 'startRequest',
+        value: function startRequest() {
+            var _this3 = this;
+
+            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+            this.vm.loading = true;
+            this.counter += 1;
+            this.getShotsInteractor.getRandomShot(function (shot, error) {
+                _this3._handleShot(shot, error);
+            });
+        }
+    }, {
+        key: '_handleShot',
+        value: function _handleShot(shot) {
+            this.vm.presentShot(shot);
+            this.vm.loading = false;
+        }
+    }]);
+
+    return RandomShotController;
+}(_base2.default);
+
+exports.default = RandomShotController;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9633,7 +9719,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-11.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _applicationController = __webpack_require__(22);
+var _applicationController = __webpack_require__(25);
 
 var _applicationController2 = _interopRequireDefault(_applicationController);
 
@@ -9664,7 +9750,7 @@ var ApplicationFactory = function () {
 exports.default = ApplicationFactory;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9675,7 +9761,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.routes = exports.router = undefined;
 
-var _vueRouter = __webpack_require__(35);
+var _vueRouter = __webpack_require__(38);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
@@ -9683,37 +9769,40 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _homeComponent = __webpack_require__(18);
+var _homeComponent = __webpack_require__(20);
 
 var _homeComponent2 = _interopRequireDefault(_homeComponent);
 
-var _compositionComponent = __webpack_require__(15);
+var _compositionComponent = __webpack_require__(17);
 
 var _compositionComponent2 = _interopRequireDefault(_compositionComponent);
 
-var _randomShotComponent = __webpack_require__(19);
+var _randomShotComponent = __webpack_require__(21);
 
 var _randomShotComponent2 = _interopRequireDefault(_randomShotComponent);
 
-var _sendPushComponent = __webpack_require__(20);
+var _sendPushComponent = __webpack_require__(22);
 
 var _sendPushComponent2 = _interopRequireDefault(_sendPushComponent);
 
-var _shotsList = __webpack_require__(21);
+var _shotsList = __webpack_require__(23);
 
 var _shotsList2 = _interopRequireDefault(_shotsList);
 
-var _route = __webpack_require__(12);
+var _signIn = __webpack_require__(24);
+
+var _signIn2 = _interopRequireDefault(_signIn);
+
+var _route = __webpack_require__(14);
 
 var _route2 = _interopRequireDefault(_route);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Created by dannyyassine on 2017-03-11.
- */
+var homeRoute = new _route2.default(); /**
+                                        * Created by dannyyassine on 2017-03-11.
+                                        */
 
-var homeRoute = new _route2.default();
 homeRoute.component = _homeComponent2.default;
 homeRoute.nav_name = "Home";
 
@@ -9737,8 +9826,37 @@ shotsListRoute.path = "/shots";
 shotsListRoute.component = _shotsList2.default;
 shotsListRoute.nav_name = "Shots";
 
-var routes = [homeRoute, aboutRoute, dribbbleRoute, pushRoute, shotsListRoute];
+var redirectRoute = new _route2.default();
+redirectRoute.path = "/redirect";
+redirectRoute.component = {};
+redirectRoute.nav_name = "Redirect";
 
+var signInRoute = new _route2.default();
+signInRoute.path = "/sign_in";
+signInRoute.component = _signIn2.default;
+
+pathsRequireLogin([shotsListRoute, pushRoute]);
+
+var routes = [homeRoute, aboutRoute, dribbbleRoute, pushRoute, shotsListRoute, redirectRoute, signInRoute];
+
+function pathsRequireLogin(paths) {
+
+    var validate = function validateSignedInUser() {
+        return false; //localStorage.getItem('user_token') == null ? false : true;
+    };
+
+    var redirect = function redirect(to) {
+        console.log(to);
+        if (validate()) {
+            return to.path;
+        } else {
+            return '/sign_in?source_path=' + to.path;
+        }
+    };
+    for (var path in paths) {
+        paths[path].redirect = redirect;
+    }
+};
 _vue2.default.use(_vueRouter2.default);
 var router = new _vueRouter2.default({
     routes: routes
@@ -9748,13 +9866,13 @@ exports.router = router;
 exports.routes = routes;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <ul>\n        <li>\n            <img class=\"size-40 circle\" src=\"../link_zelda.png\">\n        </li>\n        <li v-for=\"item in routes\">\n            <router-link :to=item.path>{{item.nav_name}}</router-link>\n        </li>\n    </ul>\n\n    <div id=\"main-content\">\n        <router-view></router-view>\n    </div>\n</div>\n"
+module.exports = "<div>\n    <ul>\n        <li>\n            <img class=\"size-40 circle\" src=\"../link_zelda.png\">\n        </li>\n        <li v-for=\"item in routes\">\n            <router-link v-if=\"item.nav_name != null\" :to=item.path>{{item.nav_name}}</router-link>\n        </li>\n    </ul>\n\n    <div id=\"main-content\">\n        <router-view></router-view>\n    </div>\n</div>\n"
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9768,15 +9886,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-07.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _randomShot = __webpack_require__(37);
+var _randomShot = __webpack_require__(7);
 
 var _randomShot2 = _interopRequireDefault(_randomShot);
 
-var _shotStorage = __webpack_require__(3);
+var _shotStorage = __webpack_require__(2);
 
 var _shotStorage2 = _interopRequireDefault(_shotStorage);
 
-var _getShots = __webpack_require__(4);
+var _getShots = __webpack_require__(3);
 
 var _getShots2 = _interopRequireDefault(_getShots);
 
@@ -9810,7 +9928,7 @@ var RandomShotDataFactory = function () {
 exports.default = RandomShotDataFactory;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9824,15 +9942,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-14.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _shotsList = __webpack_require__(24);
+var _shotsList = __webpack_require__(26);
 
 var _shotsList2 = _interopRequireDefault(_shotsList);
 
-var _shotStorage = __webpack_require__(3);
+var _shotStorage = __webpack_require__(2);
 
 var _shotStorage2 = _interopRequireDefault(_shotStorage);
 
-var _getShots = __webpack_require__(4);
+var _getShots = __webpack_require__(3);
 
 var _getShots2 = _interopRequireDefault(_getShots);
 
@@ -9867,7 +9985,63 @@ var ShotsListFactory = function () {
 exports.default = ShotsListFactory;
 
 /***/ }),
-/* 12 */
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by dannyyassine on 2017-03-14.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _randomShot = __webpack_require__(7);
+
+var _randomShot2 = _interopRequireDefault(_randomShot);
+
+var _shotStorage = __webpack_require__(2);
+
+var _shotStorage2 = _interopRequireDefault(_shotStorage);
+
+var _getShots = __webpack_require__(3);
+
+var _getShots2 = _interopRequireDefault(_getShots);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var SignInFactory = function () {
+    function SignInFactory() {
+        _classCallCheck(this, SignInFactory);
+    }
+
+    _createClass(SignInFactory, null, [{
+        key: 'data',
+        value: function data() {
+
+            var storage = new _shotStorage2.default();
+            var getShots = new _getShots2.default(storage);
+            var randomShotPresenter = new _randomShot2.default(getShots);
+
+            return {
+                someMessage: "Welcome to the Dribbble API",
+                presenter: randomShotPresenter
+            };
+        }
+    }]);
+
+    return SignInFactory;
+}();
+
+exports.default = SignInFactory;
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9888,13 +10062,13 @@ var Route = function Route() {
 
     this.path = "/";
     this.component = null;
-    this.nav_name = "";
+    this.nav_name = null;
 };
 
 exports.default = Route;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9907,7 +10081,7 @@ exports.Sort = exports.Timeframe = exports.List = exports.DribbbleWebService = u
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _httpService = __webpack_require__(2);
+var _httpService = __webpack_require__(5);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10017,7 +10191,7 @@ exports.Timeframe = Timeframe;
 exports.Sort = Sort;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10060,7 +10234,7 @@ var LocalStorage = function () {
 exports.default = LocalStorage;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10074,17 +10248,17 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _component_ = __webpack_require__(16);
+var _component_ = __webpack_require__(18);
 
 var _component_2 = _interopRequireDefault(_component_);
 
-var _component_3 = __webpack_require__(17);
+var _component_3 = __webpack_require__(19);
 
 var _component_4 = _interopRequireDefault(_component_3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(26); /**
+var template = __webpack_require__(28); /**
                                                          * Created by dannyyassine on 2017-03-07.
                                                          */
 
@@ -10115,7 +10289,7 @@ var Compostion = _vue2.default.extend({
 exports.default = Compostion;
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10129,7 +10303,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _component = __webpack_require__(32);
+var _component = __webpack_require__(35);
 
 var _component2 = _interopRequireDefault(_component);
 
@@ -10165,7 +10339,7 @@ Component1.INPUT_TEXT_DID_CHANGE = 'INPUT_TEXT_DID_CHANGE';
 exports.default = Component1;
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10179,7 +10353,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _component = __webpack_require__(33);
+var _component = __webpack_require__(36);
 
 var _component2 = _interopRequireDefault(_component);
 
@@ -10224,7 +10398,7 @@ var Component2 = _vue2.default.component('component-2', {
 exports.default = Component2;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10240,7 +10414,7 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(28); /**
+var template = __webpack_require__(30); /**
                                                         * Created by dannyyassine on 2017-03-07.
                                                         */
 
@@ -10255,7 +10429,7 @@ var Home = _vue2.default.extend({
 exports.default = Home;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10269,17 +10443,17 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _randomShotDataFactory = __webpack_require__(10);
+var _randomShotDataFactory = __webpack_require__(11);
 
 var _randomShotDataFactory2 = _interopRequireDefault(_randomShotDataFactory);
 
-var _detailShotComponent = __webpack_require__(5);
+var _detailShotComponent = __webpack_require__(4);
 
 var _detailShotComponent2 = _interopRequireDefault(_detailShotComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(29); /**
+var template = __webpack_require__(31); /**
                                                               * Created by dannyyassine on 2017-03-07.
                                                               */
 
@@ -10320,7 +10494,7 @@ var RandomShot = _vue2.default.extend({
 exports.default = RandomShot;
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10334,7 +10508,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _sendPush = __webpack_require__(30);
+var _sendPush = __webpack_require__(32);
 
 var _sendPush2 = _interopRequireDefault(_sendPush);
 
@@ -10382,7 +10556,7 @@ var SendPush = _vue2.default.extend({
 exports.default = SendPush;
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10396,17 +10570,17 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _shotsList = __webpack_require__(11);
+var _shotsList = __webpack_require__(12);
 
 var _shotsList2 = _interopRequireDefault(_shotsList);
 
-var _detailShotComponent = __webpack_require__(5);
+var _detailShotComponent = __webpack_require__(4);
 
 var _detailShotComponent2 = _interopRequireDefault(_detailShotComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(31); /**
+var template = __webpack_require__(33); /**
                                                              * Created by dannyyassine on 2017-03-14.
                                                              */
 
@@ -10444,7 +10618,69 @@ var ShotsList = _vue2.default.extend({
 exports.default = ShotsList;
 
 /***/ }),
-/* 22 */
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = __webpack_require__(0);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _signIn = __webpack_require__(13);
+
+var _signIn2 = _interopRequireDefault(_signIn);
+
+var _detailShotComponent = __webpack_require__(4);
+
+var _detailShotComponent2 = _interopRequireDefault(_detailShotComponent);
+
+var _eventBus = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var template = __webpack_require__(34); /**
+                                                           * Created by dannyyassine on 2017-03-14.
+                                                           */
+
+
+/**
+ * @props presenter: RandomShotPresenter
+ * @props shot: Shot (initially null)
+ */
+var SignIn = _vue2.default.extend({
+    data: function data() {
+        var data = _signIn2.default.data();
+        data.email = "";
+        data.password = "";
+        return data;
+    },
+    template: template,
+    methods: {
+        formDidSubmitted: function formDidSubmitted(event) {
+            if (this.email.length > 5 && this.password.length > 0) {
+                localStorage.setItem('user_token', "1234");
+                _eventBus.EventBus.$emit('user-sign-in', this.$route);
+            } else {}
+        }
+    },
+    created: function created() {
+        this.presenter.bind(this);
+    },
+    mounted: function mounted() {
+        //this.presenter.onLoad();
+    }
+});
+
+exports.default = SignIn;
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10458,7 +10694,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _basePresenter = __webpack_require__(6);
+var _basePresenter = __webpack_require__(27);
 
 var _basePresenter2 = _interopRequireDefault(_basePresenter);
 
@@ -10494,51 +10730,7 @@ var ApplicationController = function (_Presenter) {
 exports.default = ApplicationController;
 
 /***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Created by dannyyassine on 2017-03-14.
- */
-
-var Controller = function () {
-    function Controller() {
-        _classCallCheck(this, Controller);
-
-        this.vm = null;
-    }
-
-    _createClass(Controller, [{
-        key: "bind",
-        value: function bind(vm) {
-            this.vm = vm;
-        }
-    }, {
-        key: "onLoad",
-        value: function onLoad() {}
-    }, {
-        key: "onUnLoad",
-        value: function onUnLoad() {}
-    }]);
-
-    return Controller;
-}();
-
-exports.default = Controller;
-
-/***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10552,7 +10744,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _base = __webpack_require__(23);
+var _base = __webpack_require__(6);
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -10606,56 +10798,105 @@ var ShotsListController = function (_Controller) {
 exports.default = ShotsListController;
 
 /***/ }),
-/* 25 */,
-/* 26 */
-/***/ (function(module, exports) {
-
-module.exports = "<div v-bind:model=\"total\">\n    <div class=\"left-float size-percent-50\">\n        <component-1 ref=\"compo1\"\n                     @buttonPressed=\"buttonPressed\"\n                     @inputTextDidChange=\"validateText\"/>\n    </div>\n    <div class=\"right-float size-percent-50\">\n        <component-2 ref=\"compo2\"\n                     :count=\"total\"\n                     :inputText=\"name\"/>\n    </div>\n</div>"
-
-/***/ }),
 /* 27 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<div v-on:click=\"detailClicked\" class=\"corner-radius-10 overlay-hidden\">\n    <h4>Detail Shot</h4>\n        <h1>{{shot.title}}</h1>\n        <div id=\"detail\">\n            {{shot.description}}\n            {{ description() }}\n        </div>\n        <div class=\"center-horizontal\">\n            <img v-bind:src=\"shot.images.hidpi || shot.images.normal\" width=\"500px\" height=\"auto\">\n        </div>\n</div>"
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Created by dannyyassine on 2017-03-08.
+ */
+
+var Presenter = function () {
+    function Presenter() {
+        _classCallCheck(this, Presenter);
+
+        this.vm = null;
+    }
+
+    _createClass(Presenter, [{
+        key: "bind",
+        value: function bind(vm) {
+            this.vm = vm;
+        }
+    }, {
+        key: "onLoad",
+        value: function onLoad() {}
+    }, {
+        key: "onUnLoad",
+        value: function onUnLoad() {}
+    }]);
+
+    return Presenter;
+}();
+
+exports.default = Presenter;
 
 /***/ }),
 /* 28 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h1>Welcome to my Dribbble Vue awesome app!</h1>\n    <p>you can now browse the different tabs for dribbble awesomeness</p>\n</div>\n"
+module.exports = "<div v-bind:model=\"total\">\n    <div class=\"left-float size-percent-50\">\n        <component-1 ref=\"compo1\"\n                     @buttonPressed=\"buttonPressed\"\n                     @inputTextDidChange=\"validateText\"/>\n    </div>\n    <div class=\"right-float size-percent-50\">\n        <component-2 ref=\"compo2\"\n                     :count=\"total\"\n                     :inputText=\"name\"/>\n    </div>\n</div>"
 
 /***/ }),
 /* 29 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <button id=\"request-button\" v-on:click=\"startRequestPressed\">Start</button>\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n        <detail-shot class=\"cell\" v-bind:shot=\"shot\"></detail-shot>\n    </div>\n</div>"
+module.exports = "<div v-on:click=\"detailClicked\" class=\"corner-radius-10 overlay-hidden\">\n    <h4>Detail Shot</h4>\n        <h1>{{shot.title}}</h1>\n        <div id=\"detail\">\n            {{shot.description}}\n            {{ description() }}\n        </div>\n        <div class=\"center-horizontal\">\n            <img v-bind:src=\"shot.images.hidpi || shot.images.normal\" width=\"500px\" height=\"auto\">\n        </div>\n</div>"
 
 /***/ }),
 /* 30 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    Send Push!\n    <form>\n        <input v-model=\"message.greeting\">\n    </form>\n    <p> {{message.greeting}} </p>\n    <p> {{formattedMessage}} </p>\n    <button v-on:click=\"buttonClicked()\">Send Push</button>\n    {{inputMessage}}\n</div>"
+module.exports = "<div>\n    <h1>Welcome to my Dribbble Vue awesome app!</h1>\n    <p>you can now browse the different tabs for dribbble awesomeness</p>\n</div>\n"
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"showModal = !showModal\">\n        <div class=\"center-horizontal size-percent-50\">\n            <detail-shot class=\"cell\" v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n            <detail-shot class=\"cell\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n    </div>\n</div>"
+module.exports = "<div>\n    <button id=\"request-button\" v-on:click=\"startRequestPressed\">Start</button>\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n        <detail-shot class=\"cell\" v-bind:shot=\"shot\"></detail-shot>\n    </div>\n</div>"
 
 /***/ }),
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"azure padding-50\">\n    component 1\n    <div>\n        <br>\n        <input type=\"text\" placeholder=\"enter some stuff\" @input=\"inputTextDidChange\">\n    </div>\n    <div>\n        <br>\n        <button @click=\"buttonPressed()\">Send Hello</button>\n    </div>\n</div>"
+module.exports = "<div>\n    Send Push!\n    <form>\n        <input v-model=\"message.greeting\">\n    </form>\n    <p> {{message.greeting}} </p>\n    <p> {{formattedMessage}} </p>\n    <button v-on:click=\"buttonClicked()\">Send Push</button>\n    {{inputMessage}}\n</div>"
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mango padding-50\">\n    component 2\n    <h4>{{count}}</h4>\n    <h4>{{inputText}}</h4>\n    <h4>{{nameText}}</h4>\n</div>"
+module.exports = "<div>\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"showModal = !showModal\">\n        <div class=\"center-horizontal size-percent-50\">\n            <detail-shot class=\"cell\" v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n            <detail-shot class=\"cell\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n    </div>\n</div>"
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n    <form v-on:submit=\"formDidSubmitted\">\n        <label>Email</label>\n        <br>\n        <input type=\"text\" placeholder=\"Enter email\" v-model=\"email\">\n        <br>\n        <label>Password</label>\n        <br>\n        <input type=\"password\" placeholder=\"Password\" v-model=\"password\">\n        <input type=\"submit\" value=\"Submit\">\n    </form>\n</div>"
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"azure padding-50\">\n    component 1\n    <div>\n        <br>\n        <input type=\"text\" placeholder=\"enter some stuff\" @input=\"inputTextDidChange\">\n    </div>\n    <div>\n        <br>\n        <button @click=\"buttonPressed()\">Send Hello</button>\n    </div>\n</div>"
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"mango padding-50\">\n    component 2\n    <h4>{{count}}</h4>\n    <h4>{{inputText}}</h4>\n    <h4>{{nameText}}</h4>\n</div>"
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports) {
 
 var g;
@@ -10682,7 +10923,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -12972,7 +13213,7 @@ return VueRouter;
 
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12982,22 +13223,24 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _applicationRouter = __webpack_require__(8);
+var _applicationRouter = __webpack_require__(9);
 
-var _applicationFactory = __webpack_require__(7);
+var _applicationFactory = __webpack_require__(8);
 
 var _applicationFactory2 = _interopRequireDefault(_applicationFactory);
 
-var _base = __webpack_require__(9);
+var _base = __webpack_require__(10);
 
 var _base2 = _interopRequireDefault(_base);
 
+var _eventBus = __webpack_require__(1);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Created by dannyyassine on 2017-03-06.
- */
-var data = _applicationFactory2.default.applicatonData();
+var data = _applicationFactory2.default.applicatonData(); /**
+                                                           * Created by dannyyassine on 2017-03-06.
+                                                           */
+
 data.routes = _applicationRouter.routes;
 
 var app = new _vue2.default({
@@ -13005,9 +13248,16 @@ var app = new _vue2.default({
     router: _applicationRouter.router,
     template: _base2.default,
     data: data,
+    methods: {
+        onSignIn: function onSignIn(from) {
+            this.$router.push('/');
+            //this.$router.push(from.query.source_path);
+        }
+    },
     beforeCreate: function beforeCreate() {},
     created: function created() {
         this.presenter.bind(this);
+        _eventBus.EventBus.$on('user-sign-in', this.onSignIn);
     },
     beforeMount: function beforeMount() {},
     mounted: function mounted() {
@@ -13016,93 +13266,8 @@ var app = new _vue2.default({
     beforeUpdate: function beforeUpdate() {},
     updated: function updated() {},
     beforeDestroy: function beforeDestroy() {},
-    destroyed: function destroyed() {},
-
-    methods: {}
+    destroyed: function destroyed() {}
 });
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _base = __webpack_require__(23);
-
-var _base2 = _interopRequireDefault(_base);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by dannyyassine on 2017-03-14.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-
-var RandomShotController = function (_Controller) {
-    _inherits(RandomShotController, _Controller);
-
-    /**
-     * @property {LocalStorage} shotStorage
-     */
-    function RandomShotController(getShotsInteractor) {
-        _classCallCheck(this, RandomShotController);
-
-        var _this = _possibleConstructorReturn(this, (RandomShotController.__proto__ || Object.getPrototypeOf(RandomShotController)).call(this));
-
-        _this.counter = 0;
-        _this.vm = null;
-        _this.getShotsInteractor = getShotsInteractor;
-        return _this;
-    }
-
-    _createClass(RandomShotController, [{
-        key: 'onLoad',
-        value: function onLoad() {
-            var _this2 = this;
-
-            _get(RandomShotController.prototype.__proto__ || Object.getPrototypeOf(RandomShotController.prototype), 'onLoad', this).call(this);
-            this.getShotsInteractor.getCachedShot(function (shot, error) {
-                _this2._handleShot(shot, error);
-            });
-        }
-    }, {
-        key: 'startRequest',
-        value: function startRequest() {
-            var _this3 = this;
-
-            var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
-
-            this.vm.loading = true;
-            this.counter += 1;
-            this.getShotsInteractor.getRandomShot(function (shot, error) {
-                _this3._handleShot(shot, error);
-            });
-        }
-    }, {
-        key: '_handleShot',
-        value: function _handleShot(shot) {
-            this.vm.presentShot(shot);
-            this.vm.loading = false;
-        }
-    }]);
-
-    return RandomShotController;
-}(_base2.default);
-
-exports.default = RandomShotController;
 
 /***/ })
 /******/ ]);

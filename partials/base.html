@@ -4,7 +4,7 @@
             <img class="size-40 circle" src="../link_zelda.png">
         </li>
         <li v-for="item in routes">
-            <router-link :to=item.path>{{item.nav_name}}</router-link>
+            <router-link v-if="item.nav_name != null" :to=item.path>{{item.nav_name}}</router-link>
         </li>
     </ul>
 

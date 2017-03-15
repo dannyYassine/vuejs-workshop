@@ -6,6 +6,6 @@ export default class Route {
     constructor() {
         this.path = "/";
         this.component = null;
-        this.nav_name = "";
+        this.nav_name = null;
     }
 }

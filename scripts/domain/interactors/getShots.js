@@ -52,10 +52,15 @@ export default class GetShots {
     }
 
     getRandomShot(callback = () => {}) {
-        let per_page = 100;
-        var http = new HttpService();
-        http.URL(`https://api.dribbble.com/v1/shots?access_token=9cc6c5a89983f37524e9c6d9536c033e03c778687dbb388d0f14ea7bb2595694&sort=recent&per_page=${per_page}`)
-            .GET()
+        // let per_page = 100;
+        // var http = new HttpService();
+        // http.URL(`https://api.dribbble.com/v1/shots?access_token=9cc6c5a89983f37524e9c6d9536c033e03c778687dbb388d0f14ea7bb2595694&sort=recent&per_page=${per_page}`)
+        //     .GET()
+        var webService = new DribbbleWebService();
+        webService
+            .setShotEndpoint()
+            .setPerPage(100)
+            .setSort(DribbbleWebService.Sort.RECENT)
             .execute((json) => {
 
                 let shot = json[Math.floor(Math.random() * per_page)];
