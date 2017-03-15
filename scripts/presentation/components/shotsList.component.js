@@ -1,33 +1,30 @@
 /**
- * Created by dannyyassine on 2017-03-07.
+ * Created by dannyyassine on 2017-03-14.
  */
 import Vue from '../../../vendors/vue';
-var template = require('../../../partials/randomShot.html');
-import RandomShotDataFactory from './../../application/factories/randomShotDataFactory';
+var template = require('../../../partials/shotsList.html');
+import ShotsListFactory from './../../application/factories/shotsList.factory';
 import DetailShot from './detailShot.component.js';
-
-let data = RandomShotDataFactory.data();
 
 /**
  * @props presenter: RandomShotPresenter
  * @props shot: Shot (initially null)
  */
-const RandomShot = Vue.extend({
+const ShotsList = Vue.extend({
     data: function() {
-        data.shot = null;
+        var data = ShotsListFactory.data();
         data.loading = true;
         data.showModal = false;
+        data.selectedShot = null;
         return data;
     },
     template: template,
     methods: {
-        startRequestPressed() {
-            this.presenter.startRequest();
-        },
-        presentShot(shot) {
-            this.shot = shot;
+        presentShots(shots) {
+            this.shots = shots;
         },
         detailShotClicked(shot) {
+            this.selectedShot = shot;
             this.showModal = true;
         }
     },
@@ -39,4 +36,4 @@ const RandomShot = Vue.extend({
     }
 });
 
-export default RandomShot;
+export default ShotsList;

@@ -1,9 +1,9 @@
 <div>
-    <button id="request-button">Start</button>
+    <button id="request-button" v-on:click="startRequestPressed">Start</button>
     <div v-if="loading == true">
         Loading...
     </div>
-    <div v-if="loading == false">
-        <detail-shot v-bind:shot="shot"></detail-shot>
+    <div v-if="loading == false" class="grid">
+        <detail-shot class="cell" v-bind:shot="shot"></detail-shot>
     </div>
 </div>

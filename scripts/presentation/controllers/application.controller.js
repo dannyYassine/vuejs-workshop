@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-03-08.
  */
 
-import Presenter from '../presentation/presenters/basePresenter.presenter';
+import Presenter from '../../presentation/presenters/basePresenter.presenter';
 
 export default class ApplicationController extends Presenter {
 
@@ -12,7 +12,6 @@ export default class ApplicationController extends Presenter {
 
     onLoad() {
         super.onLoad();
-
     }
 
 }

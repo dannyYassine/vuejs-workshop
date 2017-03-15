@@ -1,0 +1,10 @@
+<div>
+    Send Push!
+    <form>
+        <input v-model="message.greeting">
+    </form>
+    <p> {{message.greeting}} </p>
+    <p> {{formattedMessage}} </p>
+    <button v-on:click="buttonClicked()">Send Push</button>
+    {{inputMessage}}
+</div>

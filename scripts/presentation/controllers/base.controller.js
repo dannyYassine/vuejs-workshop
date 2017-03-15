@@ -1,8 +1,8 @@
 /**
- * Created by dannyyassine on 2017-03-08.
+ * Created by dannyyassine on 2017-03-14.
  */
 
-export default class Presenter {
+export default class Controller {
     constructor() {
         this.vm = null;
     }

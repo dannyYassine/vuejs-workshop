@@ -1,8 +1,11 @@
 <div>
     <ul>
-        <li><router-link to="/">Go to Foo</router-link></li>
-        <li><router-link to="/about">Go to Bar</router-link></li>
-        <li><router-link to="/shot">Random Shot</router-link></li>
+        <li>
+            <img class="size-40 circle" src="../link_zelda.png">
+        </li>
+        <li v-for="item in routes">
+            <router-link :to=item.path>{{item.nav_name}}</router-link>
+        </li>
     </ul>
 
     <div id="main-content">

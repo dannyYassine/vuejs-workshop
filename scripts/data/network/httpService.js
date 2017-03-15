@@ -7,12 +7,18 @@ class HttpService {
     constructor() {
         this.method = 'GET';
         this.url = "";
+        this.body = {};
         this.httpRequest = new XMLHttpRequest();
     }
 
     URL(url) {
         this.url = url;
         return this;
+    }
+
+    addParameter(key, value) {
+        this.body[key] = value;
+        return self;
     }
 
     GET() {
@@ -37,15 +43,24 @@ class HttpService {
 
     execute(success, error) {
         this.httpRequest.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
                 var json = JSON.parse(this.responseText);
                 success(json);
             }
-            if (this.readyState == 4 && this.status != 200) {
+            if (this.readyState == XMLHttpRequest.DONE && this.status != 200) {
                 var json = JSON.parse(this.responseText);
                 error(json);
             }
         };
+        var index = 0;
+        for (var value in this.body) {
+            if (index == 0) {
+                this.url += `?${value}=${this.body[value]}`;
+            } else {
+                this.url += `&${value}=${this.body[value]}`;
+            }
+            index += 1;
+        }
         this.httpRequest.open(this.method, this.url, true);
         this.httpRequest.send();
     }

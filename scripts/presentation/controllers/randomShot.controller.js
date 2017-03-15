@@ -1,9 +1,9 @@
 /**
- * Created by dannyyassine on 2017-03-07.
+ * Created by dannyyassine on 2017-03-14.
  */
-import Presenter from './basePresenter.presenter.js';
+import Controller from './base.controller';
 
-export default class RandomShotPresenter extends Presenter {
+export default class RandomShotController extends Controller {
 
     /**
      * @property {LocalStorage} shotStorage

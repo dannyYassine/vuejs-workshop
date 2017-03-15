@@ -1,10 +1,11 @@
-<div>
+<div v-on:click="detailClicked" class="corner-radius-10 overlay-hidden">
     <h4>Detail Shot</h4>
-    <div v-if="shot">
         <h1>{{shot.title}}</h1>
-        {{shot.description}}
+        <div id="detail">
+            {{shot.description}}
+            {{ description() }}
+        </div>
         <div class="center-horizontal">
             <img v-bind:src="shot.images.hidpi || shot.images.normal" width="500px" height="auto">
         </div>
-    </div>
 </div>

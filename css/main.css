@@ -4,7 +4,7 @@ body {
 }
 
 .app {
-    background-color: gray;
+
 }
 
 a {
@@ -49,11 +49,93 @@ li a:hover {
 #main-content {
     width: 90%;
     margin: 50px auto;
-    background-color: lightgray;
     overflow-clip: hidden;
 }
 
 .center-horizontal {
     margin: 0 auto;
     width: 500px;
+}
+
+
+.size-30 {
+    width: 30px;
+    height: 30px;
+}
+
+.size-40 {
+    width: 40px;
+    height: 40px;
+}
+
+.size-50 {
+    width: 50px;
+    height: 50px;
+}
+
+.size-percent-50 {
+    width: 50%;
+}
+
+.circle {
+    border-radius: 50px;
+    border: 2px solid white;
+}
+
+/*LAYOUT*/
+
+.left-float {
+    float: left;
+}
+
+.right-float {
+    float: right;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.cell {
+    flex: 0 0 32%;
+    height: 500px;
+    margin-bottom: 5px;
+    background-color: #999;
+    border: 5px lightgray;
+}
+
+.padding-50 {
+    margin: 50px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.overlay-hidden {
+    overflow: hidden;
+}
+
+.corner-radius-5 {
+    border-radius: 5px;
+}
+.corner-radius-10 {
+    border-radius: 5px;
+}
+/* COLORS */
+
+.azure {
+    background-color: azure;
+}
+
+.mango {
+    background-color: orange;
 }
