@@ -7,7 +7,7 @@ class HttpService {
     constructor() {
         this.method = 'GET';
         this.url = "";
-        this.body = {};
+        this.body = new Map();
         this.httpRequest = new XMLHttpRequest();
     }
 
@@ -17,7 +17,7 @@ class HttpService {
     }
 
     addParameter(key, value) {
-        this.body[key] = value;
+        this.body.set(key, value);
         return self;
     }
 
@@ -53,14 +53,15 @@ class HttpService {
             }
         };
         var index = 0;
-        for (var value in this.body) {
+        this.body.forEach((value, key) => {
             if (index == 0) {
-                this.url += `?${value}=${this.body[value]}`;
+                this.url += `?${key}=${value}`;
             } else {
-                this.url += `&${value}=${this.body[value]}`;
+                this.url += `&${key}=${value}`;
             }
             index += 1;
-        }
+        });
+
         this.httpRequest.open(this.method, this.url, true);
         this.httpRequest.send();
     }

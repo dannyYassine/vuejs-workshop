@@ -1,11 +1,5 @@
-<div v-on:click="detailClicked" class="corner-radius-10 overlay-hidden">
-    <h4>Detail Shot</h4>
-        <h1>{{shot.title}}</h1>
-        <div id="detail">
-            {{shot.description}}
-            {{ description() }}
-        </div>
-        <div class="center-horizontal">
-            <img v-bind:src="shot.images.hidpi || shot.images.normal" width="500px" height="auto">
-        </div>
+<div v-on:click="detailClicked" class="border-10 drop-shadow overlay-hidden center-horizontal">
+    <div class="center-horizontal">
+        <img class="detail-image" v-bind:src="shot.images.hidpi || shot.images.normal">
+    </div>
 </div>

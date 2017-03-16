@@ -8,4 +8,5 @@ export default class Route {
         this.component = null;
         this.nav_name = null;
     }
+
 }

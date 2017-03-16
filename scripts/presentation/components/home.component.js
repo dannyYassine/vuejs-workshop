@@ -8,7 +8,12 @@ const Home = Vue.extend({
     data: function() {
         return {someMessage: "Hellow from home"}
     },
-    template: template
+    template: template,
+    methods: {
+        mouseOver(event) {
+            console.log(event);
+        }
+    }
 });
 
 export default Home;

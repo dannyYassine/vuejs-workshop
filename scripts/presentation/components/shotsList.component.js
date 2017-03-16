@@ -5,6 +5,7 @@ import Vue from '../../../vendors/vue';
 var template = require('../../../partials/shotsList.html');
 import ShotsListFactory from './../../application/factories/shotsList.factory';
 import DetailShot from './detailShot.component.js';
+import CardShot from './cards/cardShot.component.js';
 
 /**
  * @props presenter: RandomShotPresenter
@@ -26,6 +27,9 @@ const ShotsList = Vue.extend({
         detailShotClicked(shot) {
             this.selectedShot = shot;
             this.showModal = true;
+        },
+        dismissModal() {
+            this.showModal = false;
         }
     },
     created() {
@@ -33,6 +37,9 @@ const ShotsList = Vue.extend({
     },
     mounted() {
         this.presenter.onLoad();
+    },
+    components: {
+        'shot-item': DetailShot
     }
 });
 

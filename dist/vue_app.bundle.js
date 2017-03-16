@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 41);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9246,7 +9246,7 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(39)))
 
 /***/ }),
 /* 1 */
@@ -9282,7 +9282,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _localStorage = __webpack_require__(16);
+var _localStorage = __webpack_require__(15);
 
 var _localStorage2 = _interopRequireDefault(_localStorage);
 
@@ -9340,9 +9340,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-13.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _httpService = __webpack_require__(5);
-
-var _dribbbleWebService = __webpack_require__(15);
+var _dribbbleWebService = __webpack_require__(13);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -9403,14 +9401,10 @@ var GetShots = function () {
 
             var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
 
-            // let per_page = 100;
-            // var http = new HttpService();
-            // http.URL(`https://api.dribbble.com/v1/shots?access_token=9cc6c5a89983f37524e9c6d9536c033e03c778687dbb388d0f14ea7bb2595694&sort=recent&per_page=${per_page}`)
-            //     .GET()
             var webService = new _dribbbleWebService.DribbbleWebService();
             webService.setShotEndpoint().setPerPage(100).setSort(_dribbbleWebService.DribbbleWebService.Sort.RECENT).execute(function (json) {
 
-                var shot = json[Math.floor(Math.random() * per_page)];
+                var shot = json[Math.floor(Math.random() * json.length)];
                 callback(shot, null);
                 _this2._handleShot(shot);
             }, function (error) {
@@ -9444,7 +9438,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _detailShot = __webpack_require__(29);
+var _detailShot = __webpack_require__(31);
 
 var _detailShot2 = _interopRequireDefault(_detailShot);
 
@@ -9496,103 +9490,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Created by dannyyassine on 2017-03-05.
- */
-
-var HttpService = function () {
-    function HttpService() {
-        _classCallCheck(this, HttpService);
-
-        this.method = 'GET';
-        this.url = "";
-        this.body = {};
-        this.httpRequest = new XMLHttpRequest();
-    }
-
-    _createClass(HttpService, [{
-        key: 'URL',
-        value: function URL(url) {
-            this.url = url;
-            return this;
-        }
-    }, {
-        key: 'addParameter',
-        value: function addParameter(key, value) {
-            this.body[key] = value;
-            return self;
-        }
-    }, {
-        key: 'GET',
-        value: function GET() {
-            this.method = 'GET';
-            return this;
-        }
-    }, {
-        key: 'POST',
-        value: function POST() {
-            this.method = 'POST';
-            return this;
-        }
-    }, {
-        key: 'DELETE',
-        value: function DELETE() {
-            this.method = 'DELETE';
-            return this;
-        }
-    }, {
-        key: 'PUT',
-        value: function PUT() {
-            this.method = 'PUT';
-            return this;
-        }
-    }, {
-        key: 'execute',
-        value: function execute(success, error) {
-            this.httpRequest.onreadystatechange = function () {
-                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                    var json = JSON.parse(this.responseText);
-                    success(json);
-                }
-                if (this.readyState == XMLHttpRequest.DONE && this.status != 200) {
-                    var json = JSON.parse(this.responseText);
-                    error(json);
-                }
-            };
-            var index = 0;
-            for (var value in this.body) {
-                if (index == 0) {
-                    this.url += '?' + value + '=' + this.body[value];
-                } else {
-                    this.url += '&' + value + '=' + this.body[value];
-                }
-                index += 1;
-            }
-            this.httpRequest.open(this.method, this.url, true);
-            this.httpRequest.send();
-        }
-    }]);
-
-    return HttpService;
-}();
-
-exports.HttpService = HttpService;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
  * Created by dannyyassine on 2017-03-14.
  */
 
@@ -9622,7 +9519,7 @@ var Controller = function () {
 exports.default = Controller;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9636,7 +9533,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _base = __webpack_require__(6);
+var _base = __webpack_require__(5);
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -9705,7 +9602,7 @@ var RandomShotController = function (_Controller) {
 exports.default = RandomShotController;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9750,7 +9647,7 @@ var ApplicationFactory = function () {
 exports.default = ApplicationFactory;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9761,7 +9658,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.routes = exports.router = undefined;
 
-var _vueRouter = __webpack_require__(38);
+var _vueRouter = __webpack_require__(40);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
@@ -9785,15 +9682,15 @@ var _sendPushComponent = __webpack_require__(22);
 
 var _sendPushComponent2 = _interopRequireDefault(_sendPushComponent);
 
-var _shotsList = __webpack_require__(23);
+var _shotsListComponent = __webpack_require__(23);
 
-var _shotsList2 = _interopRequireDefault(_shotsList);
+var _shotsListComponent2 = _interopRequireDefault(_shotsListComponent);
 
-var _signIn = __webpack_require__(24);
+var _signInComponenet = __webpack_require__(24);
 
-var _signIn2 = _interopRequireDefault(_signIn);
+var _signInComponenet2 = _interopRequireDefault(_signInComponenet);
 
-var _route = __webpack_require__(14);
+var _route = __webpack_require__(28);
 
 var _route2 = _interopRequireDefault(_route);
 
@@ -9823,7 +9720,7 @@ pushRoute.nav_name = "Push";
 
 var shotsListRoute = new _route2.default();
 shotsListRoute.path = "/shots";
-shotsListRoute.component = _shotsList2.default;
+shotsListRoute.component = _shotsListComponent2.default;
 shotsListRoute.nav_name = "Shots";
 
 var redirectRoute = new _route2.default();
@@ -9833,46 +9730,45 @@ redirectRoute.nav_name = "Redirect";
 
 var signInRoute = new _route2.default();
 signInRoute.path = "/sign_in";
-signInRoute.component = _signIn2.default;
+signInRoute.component = _signInComponenet2.default;
 
-pathsRequireLogin([shotsListRoute, pushRoute]);
+var routes = [homeRoute, aboutRoute, dribbbleRoute, pushRoute, shotsListRoute, signInRoute];
 
-var routes = [homeRoute, aboutRoute, dribbbleRoute, pushRoute, shotsListRoute, redirectRoute, signInRoute];
+var routesRequireLogin = [shotsListRoute, pushRoute];
 
-function pathsRequireLogin(paths) {
-
-    var validate = function validateSignedInUser() {
-        return false; //localStorage.getItem('user_token') == null ? false : true;
-    };
-
-    var redirect = function redirect(to) {
-        console.log(to);
-        if (validate()) {
-            return to.path;
-        } else {
-            return '/sign_in?source_path=' + to.path;
-        }
-    };
-    for (var path in paths) {
-        paths[path].redirect = redirect;
-    }
-};
 _vue2.default.use(_vueRouter2.default);
 var router = new _vueRouter2.default({
     routes: routes
+});
+
+var validateToken = function validateToken() {
+    return localStorage.getItem('user_token');
+};
+
+router.beforeEach(function (to, from, next) {
+    routesRequireLogin.map(function (route) {
+        if (to.path == route.path) {
+            // requires login
+            if (!validateToken()) {
+                next('/sign_in?source_path=' + to.path);
+                return;
+            }
+        }
+        next(); // continue
+    });
 });
 
 exports.router = router;
 exports.routes = routes;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <ul>\n        <li>\n            <img class=\"size-40 circle\" src=\"../link_zelda.png\">\n        </li>\n        <li v-for=\"item in routes\">\n            <router-link v-if=\"item.nav_name != null\" :to=item.path>{{item.nav_name}}</router-link>\n        </li>\n    </ul>\n\n    <div id=\"main-content\">\n        <router-view></router-view>\n    </div>\n</div>\n"
+module.exports = "<div>\n    <div class=\"top-nav nav-bar\">\n        <ul>\n            <li>\n                <img class=\"size-40 circle\" src=\"../link_zelda.png\">\n            </li>\n            <li v-for=\"item in routes\">\n                <router-link v-if=\"item.nav_name != null\" :to=\"item.path\" active-class=\"nav-active\">{{item.nav_name}}</router-link>\n            </li>\n        </ul>\n    </div>\n\n\n    <div>\n        <div id=\"main-content\">\n            <router-view></router-view>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9886,7 +9782,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-07.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _randomShot = __webpack_require__(7);
+var _randomShot = __webpack_require__(6);
 
 var _randomShot2 = _interopRequireDefault(_randomShot);
 
@@ -9928,7 +9824,7 @@ var RandomShotDataFactory = function () {
 exports.default = RandomShotDataFactory;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9985,7 +9881,7 @@ var ShotsListFactory = function () {
 exports.default = ShotsListFactory;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9999,7 +9895,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by dannyyassine on 2017-03-14.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _randomShot = __webpack_require__(7);
+var _randomShot = __webpack_require__(6);
 
 var _randomShot2 = _interopRequireDefault(_randomShot);
 
@@ -10041,34 +9937,7 @@ var SignInFactory = function () {
 exports.default = SignInFactory;
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Created by dannyyassine on 2017-03-11.
- */
-
-var Route = function Route() {
-    _classCallCheck(this, Route);
-
-    this.path = "/";
-    this.component = null;
-    this.nav_name = null;
-};
-
-exports.default = Route;
-
-/***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10081,7 +9950,7 @@ exports.Sort = exports.Timeframe = exports.List = exports.DribbbleWebService = u
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _httpService = __webpack_require__(5);
+var _httpService = __webpack_require__(14);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10099,7 +9968,7 @@ var DribbbleWebService = function (_HttpService) {
 
         var _this = _possibleConstructorReturn(this, (DribbbleWebService.__proto__ || Object.getPrototypeOf(DribbbleWebService)).call(this));
 
-        _this.body['access_token'] = _this.accessToken;
+        _this.addParameter('access_token', _this.accessToken);
         _this.url = 'https://api.dribbble.com/v1';
         return _this;
     }
@@ -10108,6 +9977,7 @@ var DribbbleWebService = function (_HttpService) {
         key: 'setShotEndpoint',
         value: function setShotEndpoint() {
             this.url += '/shots';
+            this.GET();
             return this;
         }
     }, {
@@ -10191,7 +10061,107 @@ exports.Timeframe = Timeframe;
 exports.Sort = Sort;
 
 /***/ }),
-/* 16 */
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Created by dannyyassine on 2017-03-05.
+ */
+
+var HttpService = function () {
+    function HttpService() {
+        _classCallCheck(this, HttpService);
+
+        this.method = 'GET';
+        this.url = "";
+        this.body = new Map();
+        this.httpRequest = new XMLHttpRequest();
+    }
+
+    _createClass(HttpService, [{
+        key: 'URL',
+        value: function URL(url) {
+            this.url = url;
+            return this;
+        }
+    }, {
+        key: 'addParameter',
+        value: function addParameter(key, value) {
+            this.body.set(key, value);
+            return self;
+        }
+    }, {
+        key: 'GET',
+        value: function GET() {
+            this.method = 'GET';
+            return this;
+        }
+    }, {
+        key: 'POST',
+        value: function POST() {
+            this.method = 'POST';
+            return this;
+        }
+    }, {
+        key: 'DELETE',
+        value: function DELETE() {
+            this.method = 'DELETE';
+            return this;
+        }
+    }, {
+        key: 'PUT',
+        value: function PUT() {
+            this.method = 'PUT';
+            return this;
+        }
+    }, {
+        key: 'execute',
+        value: function execute(success, error) {
+            var _this = this;
+
+            this.httpRequest.onreadystatechange = function () {
+                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                    var json = JSON.parse(this.responseText);
+                    success(json);
+                }
+                if (this.readyState == XMLHttpRequest.DONE && this.status != 200) {
+                    var json = JSON.parse(this.responseText);
+                    error(json);
+                }
+            };
+            var index = 0;
+            this.body.forEach(function (value, key) {
+                if (index == 0) {
+                    _this.url += '?' + key + '=' + value;
+                } else {
+                    _this.url += '&' + key + '=' + value;
+                }
+                index += 1;
+            });
+
+            this.httpRequest.open(this.method, this.url, true);
+            this.httpRequest.send();
+        }
+    }]);
+
+    return HttpService;
+}();
+
+exports.HttpService = HttpService;
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10234,6 +10204,47 @@ var LocalStorage = function () {
 exports.default = LocalStorage;
 
 /***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _vue = __webpack_require__(0);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _shotImageCard = __webpack_require__(30);
+
+var _shotImageCard2 = _interopRequireDefault(_shotImageCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by dannyyassine on 2017-03-16.
+ */
+
+var CardShot = _vue2.default.component('card-shot', {
+
+    data: function data() {
+        return {};
+    },
+    props: ['shot'],
+    template: _shotImageCard2.default,
+    methods: {
+        detailClicked: function detailClicked(event) {
+            this.$emit('detail-clicked', this.shot);
+        }
+    }
+});
+
+exports.default = CardShot;
+
+/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10258,7 +10269,7 @@ var _component_4 = _interopRequireDefault(_component_3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(28); /**
+var template = __webpack_require__(29); /**
                                                          * Created by dannyyassine on 2017-03-07.
                                                          */
 
@@ -10303,7 +10314,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _component = __webpack_require__(35);
+var _component = __webpack_require__(37);
 
 var _component2 = _interopRequireDefault(_component);
 
@@ -10353,7 +10364,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _component = __webpack_require__(36);
+var _component = __webpack_require__(38);
 
 var _component2 = _interopRequireDefault(_component);
 
@@ -10414,7 +10425,7 @@ var _vue2 = _interopRequireDefault(_vue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(30); /**
+var template = __webpack_require__(32); /**
                                                         * Created by dannyyassine on 2017-03-07.
                                                         */
 
@@ -10423,7 +10434,12 @@ var Home = _vue2.default.extend({
     data: function data() {
         return { someMessage: "Hellow from home" };
     },
-    template: template
+    template: template,
+    methods: {
+        mouseOver: function mouseOver(event) {
+            console.log(event);
+        }
+    }
 });
 
 exports.default = Home;
@@ -10443,7 +10459,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _randomShotDataFactory = __webpack_require__(11);
+var _randomShotDataFactory = __webpack_require__(10);
 
 var _randomShotDataFactory2 = _interopRequireDefault(_randomShotDataFactory);
 
@@ -10453,7 +10469,7 @@ var _detailShotComponent2 = _interopRequireDefault(_detailShotComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(31); /**
+var template = __webpack_require__(33); /**
                                                               * Created by dannyyassine on 2017-03-07.
                                                               */
 
@@ -10508,7 +10524,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _sendPush = __webpack_require__(32);
+var _sendPush = __webpack_require__(34);
 
 var _sendPush2 = _interopRequireDefault(_sendPush);
 
@@ -10570,7 +10586,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _shotsList = __webpack_require__(12);
+var _shotsList = __webpack_require__(11);
 
 var _shotsList2 = _interopRequireDefault(_shotsList);
 
@@ -10578,9 +10594,13 @@ var _detailShotComponent = __webpack_require__(4);
 
 var _detailShotComponent2 = _interopRequireDefault(_detailShotComponent);
 
+var _cardShotComponent = __webpack_require__(16);
+
+var _cardShotComponent2 = _interopRequireDefault(_cardShotComponent);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(33); /**
+var template = __webpack_require__(35); /**
                                                              * Created by dannyyassine on 2017-03-14.
                                                              */
 
@@ -10605,6 +10625,9 @@ var ShotsList = _vue2.default.extend({
         detailShotClicked: function detailShotClicked(shot) {
             this.selectedShot = shot;
             this.showModal = true;
+        },
+        dismissModal: function dismissModal() {
+            this.showModal = false;
         }
     },
     created: function created() {
@@ -10612,6 +10635,10 @@ var ShotsList = _vue2.default.extend({
     },
     mounted: function mounted() {
         this.presenter.onLoad();
+    },
+
+    components: {
+        'shot-item': _detailShotComponent2.default
     }
 });
 
@@ -10632,7 +10659,7 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _signIn = __webpack_require__(13);
+var _signIn = __webpack_require__(12);
 
 var _signIn2 = _interopRequireDefault(_signIn);
 
@@ -10644,7 +10671,7 @@ var _eventBus = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var template = __webpack_require__(34); /**
+var template = __webpack_require__(36); /**
                                                            * Created by dannyyassine on 2017-03-14.
                                                            */
 
@@ -10744,7 +10771,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _base = __webpack_require__(6);
+var _base = __webpack_require__(5);
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -10843,60 +10870,93 @@ exports.default = Presenter;
 
 /***/ }),
 /* 28 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<div v-bind:model=\"total\">\n    <div class=\"left-float size-percent-50\">\n        <component-1 ref=\"compo1\"\n                     @buttonPressed=\"buttonPressed\"\n                     @inputTextDidChange=\"validateText\"/>\n    </div>\n    <div class=\"right-float size-percent-50\">\n        <component-2 ref=\"compo2\"\n                     :count=\"total\"\n                     :inputText=\"name\"/>\n    </div>\n</div>"
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Created by dannyyassine on 2017-03-11.
+ */
+
+var Route = function Route() {
+    _classCallCheck(this, Route);
+
+    this.path = "/";
+    this.component = null;
+    this.nav_name = null;
+};
+
+exports.default = Route;
 
 /***/ }),
 /* 29 */
 /***/ (function(module, exports) {
 
-module.exports = "<div v-on:click=\"detailClicked\" class=\"corner-radius-10 overlay-hidden\">\n    <h4>Detail Shot</h4>\n        <h1>{{shot.title}}</h1>\n        <div id=\"detail\">\n            {{shot.description}}\n            {{ description() }}\n        </div>\n        <div class=\"center-horizontal\">\n            <img v-bind:src=\"shot.images.hidpi || shot.images.normal\" width=\"500px\" height=\"auto\">\n        </div>\n</div>"
+module.exports = "<div v-bind:model=\"total\">\n    <div class=\"left-float size-percent-50\">\n        <component-1 ref=\"compo1\"\n                     @buttonPressed=\"buttonPressed\"\n                     @inputTextDidChange=\"validateText\"/>\n    </div>\n    <div class=\"right-float size-percent-50\">\n        <component-2 ref=\"compo2\"\n                     :count=\"total\"\n                     :inputText=\"name\"/>\n    </div>\n</div>"
 
 /***/ }),
 /* 30 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h1>Welcome to my Dribbble Vue awesome app!</h1>\n    <p>you can now browse the different tabs for dribbble awesomeness</p>\n</div>\n"
+module.exports = "<div class=\"card\" v-on:click=\"detailClicked\">\n    <img class=\"card-img-top\" alt=\"Card image cap\">\n    <div class=\"card-block\">\n        <p class=\"card-text\">{{shot.description}}</p>\n    </div>\n</div>"
 
 /***/ }),
 /* 31 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <button id=\"request-button\" v-on:click=\"startRequestPressed\">Start</button>\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n        <detail-shot class=\"cell\" v-bind:shot=\"shot\"></detail-shot>\n    </div>\n</div>"
+module.exports = "<div v-on:click=\"detailClicked\" class=\"border-10 drop-shadow overlay-hidden center-horizontal\">\n    <div class=\"center-horizontal\">\n        <img class=\"detail-image\" v-bind:src=\"shot.images.hidpi || shot.images.normal\">\n    </div>\n</div>"
 
 /***/ }),
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    Send Push!\n    <form>\n        <input v-model=\"message.greeting\">\n    </form>\n    <p> {{message.greeting}} </p>\n    <p> {{formattedMessage}} </p>\n    <button v-on:click=\"buttonClicked()\">Send Push</button>\n    {{inputMessage}}\n</div>"
+module.exports = "<div id=\"home-content\" class=\"background-canyon\">\n    <div class=\"padding-50 full-height\">\n        <h4>Welcome</h4>\n    </div>\n</div>\n"
 
 /***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"showModal = !showModal\">\n        <div class=\"center-horizontal size-percent-50\">\n            <detail-shot class=\"cell\" v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n            <detail-shot class=\"cell\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n    </div>\n</div>"
+module.exports = "<div class=\"root-content\">\n    <button class=\"awesome-btn\" id=\"request-button\" v-on:click=\"startRequestPressed\">Start</button>\n    <br>\n    <br>\n    <br>\n    <br>\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n        <detail-shot class=\"cell\" v-bind:shot=\"shot\"></detail-shot>\n    </div>\n</div>"
 
 /***/ }),
 /* 34 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <form v-on:submit=\"formDidSubmitted\">\n        <label>Email</label>\n        <br>\n        <input type=\"text\" placeholder=\"Enter email\" v-model=\"email\">\n        <br>\n        <label>Password</label>\n        <br>\n        <input type=\"password\" placeholder=\"Password\" v-model=\"password\">\n        <input type=\"submit\" value=\"Submit\">\n    </form>\n</div>"
+module.exports = "<div class=\"root-content\">\n    Send Push!\n    <form>\n        <input v-model=\"message.greeting\">\n    </form>\n    <p> {{message.greeting}} </p>\n    <p> {{formattedMessage}} </p>\n    <button v-on:click=\"buttonClicked()\">Send Push</button>\n    {{inputMessage}}\n</div>"
 
 /***/ }),
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"azure padding-50\">\n    component 1\n    <div>\n        <br>\n        <input type=\"text\" placeholder=\"enter some stuff\" @input=\"inputTextDidChange\">\n    </div>\n    <div>\n        <br>\n        <button @click=\"buttonPressed()\">Send Hello</button>\n    </div>\n</div>"
+module.exports = "<div class=\"root-content\">\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"dismissModal\" v-bind:class=\"{'fade-in': showModal, 'fade-out': !showModal}\">\n        <div class=\"center\">\n            <detail-shot v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n            <!--<detail-shot class=\"cell-4\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></detail-shot>-->\n        <shot-item class=\"cell-4\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></shot-item>\n    </div>\n</div>"
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"mango padding-50\">\n    component 2\n    <h4>{{count}}</h4>\n    <h4>{{inputText}}</h4>\n    <h4>{{nameText}}</h4>\n</div>"
+module.exports = "<div class=\"root-content\">\n    <form v-on:submit=\"formDidSubmitted\">\n        <label>Email</label>\n        <br>\n        <input type=\"text\" placeholder=\"Enter email\" v-model=\"email\">\n        <br>\n        <label>Password</label>\n        <br>\n        <input type=\"password\" placeholder=\"Password\" v-model=\"password\">\n        <input type=\"submit\" value=\"Submit\">\n    </form>\n</div>"
 
 /***/ }),
 /* 37 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"azure padding-50\">\n    component 1\n    <div>\n        <br>\n        <input type=\"text\" placeholder=\"enter some stuff\" @input=\"inputTextDidChange\">\n    </div>\n    <div>\n        <br>\n        <button @click=\"buttonPressed()\">Send Hello</button>\n    </div>\n</div>"
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"mango padding-50\">\n    component 2\n    <h4>{{count}}</h4>\n    <h4>{{inputText}}</h4>\n    <h4>{{nameText}}</h4>\n</div>"
+
+/***/ }),
+/* 39 */
 /***/ (function(module, exports) {
 
 var g;
@@ -10923,7 +10983,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -13213,7 +13273,7 @@ return VueRouter;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13223,13 +13283,13 @@ var _vue = __webpack_require__(0);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _applicationRouter = __webpack_require__(9);
+var _applicationRouter = __webpack_require__(8);
 
-var _applicationFactory = __webpack_require__(8);
+var _applicationFactory = __webpack_require__(7);
 
 var _applicationFactory2 = _interopRequireDefault(_applicationFactory);
 
-var _base = __webpack_require__(10);
+var _base = __webpack_require__(9);
 
 var _base2 = _interopRequireDefault(_base);
 
@@ -13250,8 +13310,7 @@ var app = new _vue2.default({
     data: data,
     methods: {
         onSignIn: function onSignIn(from) {
-            this.$router.push('/');
-            //this.$router.push(from.query.source_path);
+            this.$router.push(from.query.source_path.replace("/", ""));
         }
     },
     beforeCreate: function beforeCreate() {},
@@ -13262,6 +13321,7 @@ var app = new _vue2.default({
     beforeMount: function beforeMount() {},
     mounted: function mounted() {
         this.presenter.onLoad();
+        this.$router.push('/');
     },
     beforeUpdate: function beforeUpdate() {},
     updated: function updated() {},

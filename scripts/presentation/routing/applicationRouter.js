@@ -5,12 +5,12 @@
 import VueRouter from './../../../vendors/vue-router';
 import Vue from './../../../vendors/vue';
 
-import Home from './../../presentation/components/home.component.js';
-import About from './../../presentation/components/composition.component.js';
-import RandomShot from './../../presentation/components/randomShot.component.js';
-import SendPush from './../../presentation/components/sendPush.component.js';
-import ShotsList from '../../presentation/components/shotsList.component';
-import SignInComponent from '../../presentation/components/signIn.componenet';
+import Home from './../components/home.component.js';
+import About from './../components/composition.component.js';
+import RandomShot from './../components/randomShot.component.js';
+import SendPush from './../components/sendPush.component.js';
+import ShotsList from '../components/shotsList.component.js';
+import SignInComponent from '../components/signIn.componenet.js';
 
 import Route from './route';
 
@@ -47,39 +47,36 @@ let signInRoute = new Route();
 signInRoute.path = "/sign_in";
 signInRoute.component = SignInComponent;
 
-pathsRequireLogin([shotsListRoute, pushRoute]);
-
 const routes = [
     homeRoute,
     aboutRoute,
     dribbbleRoute,
     pushRoute,
     shotsListRoute,
-    redirectRoute,
     signInRoute
 ];
 
-function pathsRequireLogin(paths) {
+var routesRequireLogin = [shotsListRoute, pushRoute];
 
-    var validate = function validateSignedInUser() {
-        return false;//localStorage.getItem('user_token') == null ? false : true;
-    };
-
-    var redirect = (to) => {
-        console.log(to);
-        if (validate()) {
-            return to.path;
-        } else {
-            return `/sign_in?source_path=${to.path}`
-        }
-    };
-    for (var path in paths) {
-        paths[path].redirect = redirect;
-    }
-};
 Vue.use(VueRouter);
 const router = new VueRouter({
     routes
+});
+
+var validateToken = function() {
+    return localStorage.getItem('user_token');
+};
+
+router.beforeEach((to, from, next) => {
+    routesRequireLogin.map((route) => {
+        if (to.path == route.path) { // requires login
+            if (!validateToken()) {
+                next(`/sign_in?source_path=${to.path}`);
+                return;
+            }
+        }
+        next(); // continue
+    });
 });
 
 export {router, routes}

@@ -1,7 +1,7 @@
-<div>
-    <div v-if="showModal" class="overlay" v-on:click="showModal = !showModal">
-        <div class="center-horizontal size-percent-50">
-            <detail-shot class="cell" v-bind:shot="selectedShot" @detail-clicked="detailShotClicked"></detail-shot>
+<div class="root-content">
+    <div v-if="showModal" class="overlay" v-on:click="dismissModal" v-bind:class="{'fade-in': showModal, 'fade-out': !showModal}">
+        <div class="center">
+            <detail-shot v-bind:shot="selectedShot" @detail-clicked="detailShotClicked"></detail-shot>
         </div>
     </div>
 
@@ -9,6 +9,7 @@
         Loading...
     </div>
     <div v-if="loading == false" class="grid">
-            <detail-shot class="cell" v-for="shot in shots" v-bind:shot="shot" @detail-clicked="detailShotClicked"></detail-shot>
+            <!--<detail-shot class="cell-4" v-for="shot in shots" v-bind:shot="shot" @detail-clicked="detailShotClicked"></detail-shot>-->
+        <shot-item class="cell-4" v-for="shot in shots" v-bind:shot="shot" @detail-clicked="detailShotClicked"></shot-item>
     </div>
 </div>

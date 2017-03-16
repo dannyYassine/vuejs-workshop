@@ -2,7 +2,7 @@
  * Created by dannyyassine on 2017-03-06.
  */
 import Vue from './../vendors/vue';
-import {router, routes} from './application/routing/applicationRouter';
+import {router, routes} from './presentation/routing/applicationRouter';
 import ApplicationFactory from './application/factories/applicationFactory';
 import template from './../partials/base.html';
 import {EventBus} from './application/eventBus';
@@ -17,8 +17,7 @@ var app = new Vue({
     data: data,
     methods: {
         onSignIn(from) {
-            this.$router.push('/');
-            //this.$router.push(from.query.source_path);
+            this.$router.push(from.query.source_path.replace("/", ""));
         }
     },
     beforeCreate() {
@@ -33,6 +32,7 @@ var app = new Vue({
     },
     mounted() {
         this.presenter.onLoad();
+        this.$router.push('/');
     },
     beforeUpdate() {
 

@@ -19,7 +19,12 @@ module.exports = {
         }, {
             test: path.join(__dirname, 'partials'),
             loader: 'raw-loader'
-        }]
+        },
+            {
+                test: /\.scss$/,
+                loaders: [ 'style', 'css', 'sass' ]
+            }
+        ]
     },
     devtool: "source-map"
 };

@@ -8,7 +8,7 @@ class DribbbleWebService extends HttpService {
 
     constructor() {
         super();
-        this.body['access_token'] = this.accessToken;
+        this.addParameter('access_token', this.accessToken);
         this.url = `https://api.dribbble.com/v1`;
     }
 
@@ -18,6 +18,7 @@ class DribbbleWebService extends HttpService {
 
     setShotEndpoint() {
         this.url += `/shots`;
+        this.GET();
         return this;
     }
 
