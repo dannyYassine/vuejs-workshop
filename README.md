@@ -1,5 +1,5 @@
 # vuejs-workshop
-Experimenting with vue.js framework
+Experimenting with vue.js framework with Clean Architecture
 
 #### Try it yourself
 
