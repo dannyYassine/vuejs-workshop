@@ -4,12 +4,10 @@
             <detail-shot v-bind:shot="selectedShot" @detail-clicked="detailShotClicked"></detail-shot>
         </div>
     </div>
-
     <div v-if="loading == true">
         Loading...
     </div>
     <div v-if="loading == false" class="grid">
-            <!--<detail-shot class="cell-4" v-for="shot in shots" v-bind:shot="shot" @detail-clicked="detailShotClicked"></detail-shot>-->
         <shot-item class="cell-4" v-for="shot in shots" v-bind:shot="shot" @detail-clicked="detailShotClicked"></shot-item>
     </div>
 </div>

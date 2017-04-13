@@ -4,6 +4,9 @@
 
 import {HttpService} from './httpService';
 
+/**
+ * 
+ */
 class DribbbleWebService extends HttpService {
 
     constructor() {

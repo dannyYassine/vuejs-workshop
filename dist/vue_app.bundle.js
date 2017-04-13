@@ -9960,6 +9960,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * Created by dannyyassine on 2017-03-14.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */
 
+/**
+ * 
+ */
 var DribbbleWebService = function (_HttpService) {
     _inherits(DribbbleWebService, _HttpService);
 
@@ -10935,7 +10938,7 @@ module.exports = "<div class=\"root-content\">\n    Send Push!\n    <form>\n    
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"root-content\">\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"dismissModal\" v-bind:class=\"{'fade-in': showModal, 'fade-out': !showModal}\">\n        <div class=\"center\">\n            <detail-shot v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n            <!--<detail-shot class=\"cell-4\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></detail-shot>-->\n        <shot-item class=\"cell-4\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></shot-item>\n    </div>\n</div>"
+module.exports = "<div class=\"root-content\">\n    <div v-if=\"showModal\" class=\"overlay\" v-on:click=\"dismissModal\" v-bind:class=\"{'fade-in': showModal, 'fade-out': !showModal}\">\n        <div class=\"center\">\n            <detail-shot v-bind:shot=\"selectedShot\" @detail-clicked=\"detailShotClicked\"></detail-shot>\n        </div>\n    </div>\n    <div v-if=\"loading == true\">\n        Loading...\n    </div>\n    <div v-if=\"loading == false\" class=\"grid\">\n        <shot-item class=\"cell-4\" v-for=\"shot in shots\" v-bind:shot=\"shot\" @detail-clicked=\"detailShotClicked\"></shot-item>\n    </div>\n</div>"
 
 /***/ }),
 /* 36 */
